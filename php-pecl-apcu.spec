@@ -38,7 +38,7 @@ Provides:       php-apcu = %{version}
 Provides:       php-apcu%{?_isa} = %{version}
 Provides:       php-pecl(apcu) = %{version}
 Provides:       php-pecl(apcu)%{?_isa} = %{version}
-%if %{?fedora} < 20
+%if 0%{?fedora} < 20
 Conflicts:      php-pecl-apc
 %else
 Obsoletes:      php-pecl-apc < 4
@@ -82,7 +82,7 @@ Summary:       APCu developer files (header)
 Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      php-devel%{?_isa}
-%if %{?fedora} < 20
+%if 0%{?fedora} < 20
 Conflicts:      php-pecl-apc-devel
 %else
 Obsoletes:      php-pecl-apc-devel < 4
@@ -100,7 +100,7 @@ Group:         Applications/Internet
 BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
 Requires:      mod_php, httpd, php-gd
-%if %{?fedora} < 20
+%if 0%{?fedora} < 20
 Conflicts:      apc-panel
 %else
 Obsoletes:      apc-panel < 4
