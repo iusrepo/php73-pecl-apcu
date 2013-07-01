@@ -27,6 +27,7 @@ URL:            http://pecl.php.net/package/APCu
 
 BuildRequires:  php-devel
 BuildRequires:  php-pear
+BuildRequires:  pcre-devel
 
 Requires(post): %{__pecl}
 Requires(postun): %{__pecl}
