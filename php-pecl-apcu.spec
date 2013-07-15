@@ -6,8 +6,13 @@
 #
 # Please, preserve the changelog entries
 #
-%{?scl:%scl_package php-pecl-apcu}
-%{!?scl:%global pkg_name %{name}}
+%if 0%{?scl:1}
+%scl_package php-pecl-apcu
+%else
+%global pkg_name %{name}
+%global _root_sysconfdir %{_sysconfdir}
+%endif
+
 %{!?php_inidir:  %{expand: %%global php_inidir  %{_sysconfdir}/php.d}}
 %{!?php_incldir: %{expand: %%global php_incldir %{_includedir}/php}}
 %{!?__pecl:      %{expand: %%global __pecl      %{_bindir}/pecl}}
