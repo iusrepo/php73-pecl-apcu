@@ -22,11 +22,15 @@
 Name:           %{?scl_prefix}php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
 Source3:        %{pecl_name}.conf.php
+
+# Restore APC serializers ABI (merged upstream)
+# https://github.com/krakjoe/apcu/pull/25
+Patch0:         %{pecl_name}-git.patch
 
 License:        PHP
 Group:          Development/Languages
@@ -47,7 +51,7 @@ Provides:       %{?scl_prefix}php-apcu%{?_isa} = %{version}
 Provides:       %{?scl_prefix}php-pecl(apcu) = %{version}
 Provides:       %{?scl_prefix}php-pecl(apcu)%{?_isa} = %{version}
 %if 0%{?fedora} < 20
-Conflicts:      %{?scl_prefix}php-pecl-apc
+Conflicts:      %{?scl_prefix}php-pecl-apc < 4
 %else
 Obsoletes:      %{?scl_prefix}php-pecl-apc < 4
 %endif
@@ -91,7 +95,7 @@ Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      %{?scl_prefix}php-devel%{?_isa}
 %if 0%{?fedora} < 20
-Conflicts:      %{?scl_prefix}php-pecl-apc-devel
+Conflicts:      %{?scl_prefix}php-pecl-apc-devel < 4
 %else
 Obsoletes:      %{?scl_prefix}php-pecl-apc-devel < 4
 Provides:       %{?scl_prefix}php-pecl-apc-devel = %{version}-%{release}
@@ -109,7 +113,7 @@ BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
 Requires:      %{?scl_prefix}mod_php, httpd, %{?scl_prefix}php-gd
 %if 0%{?fedora} < 20
-Conflicts:      %{?scl_prefix}apc-panel
+Conflicts:      %{?scl_prefix}apc-panel < 4
 %else
 Obsoletes:      %{?scl_prefix}apc-panel < 4
 Provides:       %{?scl_prefix}apc-devel = %{version}-%{release}
@@ -125,6 +129,8 @@ configuration, available on http://localhost/apcu-panel/
 mv %{pecl_name}-%{version} NTS
 
 cd NTS
+%patch0 -p1 -b .serializers
+rm -f apc_serializer.h.serializers
 
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_APC_VERSION/{s/.* "//;s/".*$//;p}' php_apc.h)
@@ -253,6 +259,9 @@ fi
 
 
 %changelog
+* Sat Jul 27 2013 Remi Collet <remi@fedoraproject.org> - 4.0.1-3
+- restore APC serializers ABI (patch merged upstream)
+
 * Mon Jul 15 2013 Remi Collet <rcollet@redhat.com> - 4.0.1-2
 - adapt for SCL
 
