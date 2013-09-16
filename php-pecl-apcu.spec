@@ -21,16 +21,12 @@
 
 Name:           %{?scl_prefix}php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.1
-Release:        3%{?dist}
+Version:        4.0.2
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
 Source3:        %{pecl_name}.conf.php
-
-# Restore APC serializers ABI (merged upstream)
-# https://github.com/krakjoe/apcu/pull/25
-Patch0:         %{pecl_name}-git.patch
 
 License:        PHP
 Group:          Development/Languages
@@ -95,11 +91,11 @@ Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      %{?scl_prefix}php-devel%{?_isa}
 %if 0%{?fedora} < 20
-Conflicts:      %{?scl_prefix}php-pecl-apc-devel < 4
+Conflicts:     %{?scl_prefix}php-pecl-apc-devel < 4
 %else
-Obsoletes:      %{?scl_prefix}php-pecl-apc-devel < 4
-Provides:       %{?scl_prefix}php-pecl-apc-devel = %{version}-%{release}
-Provides:       %{?scl_prefix}php-pecl-apc-devel%{?_isa} = %{version}-%{release}
+Obsoletes:     %{?scl_prefix}php-pecl-apc-devel < 4
+Provides:      %{?scl_prefix}php-pecl-apc-devel = %{version}-%{release}
+Provides:      %{?scl_prefix}php-pecl-apc-devel%{?_isa} = %{version}-%{release}
 %endif
 
 %description devel
@@ -113,10 +109,10 @@ BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
 Requires:      %{?scl_prefix}mod_php, httpd, %{?scl_prefix}php-gd
 %if 0%{?fedora} < 20
-Conflicts:      %{?scl_prefix}apc-panel < 4
+Conflicts:     %{?scl_prefix}apc-panel < 4
 %else
-Obsoletes:      %{?scl_prefix}apc-panel < 4
-Provides:       %{?scl_prefix}apc-devel = %{version}-%{release}
+Obsoletes:     %{?scl_prefix}apc-panel < 4
+Provides:      %{?scl_prefix}apc-devel = %{version}-%{release}
 %endif
 
 %description  -n %{?scl_prefix}apcu-panel
@@ -129,8 +125,6 @@ configuration, available on http://localhost/apcu-panel/
 mv %{pecl_name}-%{version} NTS
 
 cd NTS
-%patch0 -p1 -b .serializers
-rm -f apc_serializer.h.serializers
 
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_APC_VERSION/{s/.* "//;s/".*$//;p}' php_apc.h)
@@ -259,6 +253,9 @@ fi
 
 
 %changelog
+* Mon Sep 16 2013 Remi Collet <remi@fedoraproject.org> - 4.0.2-1
+- Update to 4.0.2
+
 * Sat Jul 27 2013 Remi Collet <remi@fedoraproject.org> - 4.0.1-3
 - restore APC serializers ABI (patch merged upstream)
 
