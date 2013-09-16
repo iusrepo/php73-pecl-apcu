@@ -11,6 +11,7 @@
 %else
 %global pkg_name %{name}
 %global _root_sysconfdir %{_sysconfdir}
+%global _root_datadir    %{_datadir}
 %endif
 
 %{!?php_inidir:  %{expand: %%global php_inidir  %{_sysconfdir}/php.d}}
@@ -94,9 +95,9 @@ Requires:      %{?scl_prefix}php-devel%{?_isa}
 Conflicts:     %{?scl_prefix}php-pecl-apc-devel < 4
 %else
 Obsoletes:     %{?scl_prefix}php-pecl-apc-devel < 4
+%endif
 Provides:      %{?scl_prefix}php-pecl-apc-devel = %{version}-%{release}
 Provides:      %{?scl_prefix}php-pecl-apc-devel%{?_isa} = %{version}-%{release}
-%endif
 
 %description devel
 These are the files needed to compile programs using APCu.
@@ -107,15 +108,17 @@ Summary:       APCu control panel
 Group:         Applications/Internet
 BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
-Requires:      %{?scl_prefix}mod_php, httpd, %{?scl_prefix}php-gd
+Requires:      %{?scl_prefix}mod_php
+Requires:      %{?scl_prefix}php-gd
+Requires:      httpd
 %if 0%{?fedora} < 20
 Conflicts:     %{?scl_prefix}apc-panel < 4
 %else
 Obsoletes:     %{?scl_prefix}apc-panel < 4
-Provides:      %{?scl_prefix}apc-devel = %{version}-%{release}
 %endif
+Provides:      %{?scl_prefix}apc-panel = %{version}-%{release}
 
-%description  -n %{?scl_prefix}apcu-panel
+%description -n %{?scl_prefix}apcu-panel
 This package provides the APCu control panel, with Apache
 configuration, available on http://localhost/apcu-panel/
 
@@ -176,12 +179,13 @@ install -D -m 644 -p NTS/apc.php  \
 sed -e s:apc.conf.php:%{_sysconfdir}/%{?scl_prefix}apcu-panel/conf.php:g \
     -i  %{buildroot}%{_datadir}/%{?scl_prefix}apcu-panel/index.php
 # Apache config
-install -D -m 644 -p %{SOURCE2} \
-        %{buildroot}%{_root_sysconfdir}/httpd/conf.d/%{?scl_prefix}apcu-panel.conf
+cp %{SOURCE2} .
 # fix path (only needed in SCL)
 sed -e 's:apcu-panel:%{?scl_prefix}apcu-panel:g' \
-    -e 's:/usr/share:%{_datadir}:' \
-    -i  %{buildroot}%{_root_sysconfdir}/httpd/conf.d/%{?scl_prefix}apcu-panel.conf
+    -e 's:%{_root_datadir}:%{_datadir}:' \
+    -i apcu-panel.conf
+install -D -m 644 -p apcu-panel.conf \
+        %{buildroot}%{_root_sysconfdir}/httpd/conf.d/%{?scl_prefix}apcu-panel.conf
 # Panel config
 install -D -m 644 -p %{SOURCE3} \
         %{buildroot}%{_sysconfdir}/%{?scl_prefix}apcu-panel/conf.php
@@ -246,13 +250,18 @@ fi
 %files -n %{?scl_prefix}apcu-panel
 %defattr(-,root,root,-)
 # Need to restrict access, as it contains a clear password
-%attr(750,apache,root) %dir %{_sysconfdir}/%{?scl_prefix}apcu-panel
+%attr(550,apache,root) %dir %{_sysconfdir}/%{?scl_prefix}apcu-panel
 %config(noreplace) %{_sysconfdir}/%{?scl_prefix}apcu-panel/conf.php
 %config(noreplace) %{_root_sysconfdir}/httpd/conf.d/%{?scl_prefix}apcu-panel.conf
 %{_datadir}/%{?scl_prefix}apcu-panel
 
 
 %changelog
+* Mon Sep 16 2013 Remi Collet <rcollet@redhat.com> - 4.0.2-2
+- fix perm on config dir
+- improve SCL compatibility
+- always provides php-pecl-apc-devel and apc-panel
+
 * Mon Sep 16 2013 Remi Collet <remi@fedoraproject.org> - 4.0.2-1
 - Update to 4.0.2
 
