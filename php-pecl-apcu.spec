@@ -1,6 +1,6 @@
 # spec file for php-pecl-apcu
 #
-# Copyright (c) 2013 Remi Collet
+# Copyright (c) 2013-2014 Remi Collet
 # License: CC-BY-SA
 # http://creativecommons.org/licenses/by-sa/3.0/
 #
@@ -23,7 +23,7 @@
 Name:           %{?scl_prefix}php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -47,7 +47,7 @@ Provides:       %{?scl_prefix}php-apcu = %{version}
 Provides:       %{?scl_prefix}php-apcu%{?_isa} = %{version}
 Provides:       %{?scl_prefix}php-pecl(apcu) = %{version}
 Provides:       %{?scl_prefix}php-pecl(apcu)%{?_isa} = %{version}
-%if 0%{?fedora} < 20
+%if 0%{?fedora} < 20 && 0%{?rhel} < 7
 Conflicts:      %{?scl_prefix}php-pecl-apc < 4
 %else
 Obsoletes:      %{?scl_prefix}php-pecl-apc < 4
@@ -60,9 +60,11 @@ Provides:       %{?scl_prefix}php-pecl-apc%{?_isa} = %{version}
 Provides:       %{?scl_prefix}php-pecl(APC) = %{version}
 Provides:       %{?scl_prefix}php-pecl(APC)%{?_isa} = %{version}
 
+%if 0%{?fedora} < 20
 # Filter private shared
 %{?filter_provides_in: %filter_provides_in %{_libdir}/.*\.so$}
 %{?filter_setup}
+%endif
 
 
 %description
@@ -91,7 +93,7 @@ Summary:       APCu developer files (header)
 Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      %{?scl_prefix}php-devel%{?_isa}
-%if 0%{?fedora} < 20
+%if 0%{?fedora} < 20 && 0%{?rhel} < 7
 Conflicts:     %{?scl_prefix}php-pecl-apc-devel < 4
 %else
 Obsoletes:     %{?scl_prefix}php-pecl-apc-devel < 4
@@ -111,7 +113,7 @@ Requires:      %{name} = %{version}-%{release}
 Requires:      %{?scl_prefix}mod_php
 Requires:      %{?scl_prefix}php-gd
 Requires:      httpd
-%if 0%{?fedora} < 20
+%if 0%{?fedora} < 20 && 0%{?rhel} < 7
 Conflicts:     %{?scl_prefix}apc-panel < 4
 %else
 Obsoletes:     %{?scl_prefix}apc-panel < 4
@@ -257,6 +259,9 @@ fi
 
 
 %changelog
+* Mon Jan 13 2014 Remi Collet <rcollet@redhat.com> - 4.0.2-3
+- EPEL-7 build
+
 * Mon Sep 16 2013 Remi Collet <rcollet@redhat.com> - 4.0.2-2
 - fix perm on config dir
 - improve SCL compatibility
