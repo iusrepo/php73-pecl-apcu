@@ -16,7 +16,7 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.3
+Version:        4.0.4
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
@@ -123,7 +123,7 @@ configuration, available on http://localhost/apcu-panel/
 %setup -qc
 mv %{pecl_name}-%{version} NTS
 
-# Fix file roles
+# Fix file roles https://github.com/krakjoe/apcu/pull/69
 sed -e '/LICENSE/s/role="src"/role="doc"/' \
     -e '/NOTICE/s/role="src"/role="doc"/' \
     -e '/README.md/s/role="src"/role="doc"/' \
@@ -258,6 +258,9 @@ fi
 
 
 %changelog
+* Sat Mar 01 2014 Remi Collet <remi@fedoraproject.org> - 4.0.4-1
+- Update to 4.0.4 (beta)
+
 * Mon Jan 27 2014 Remi Collet <remi@fedoraproject.org> - 4.0.3-1
 - Update to 4.0.3 (beta)
 - install doc in pecl doc_dir
