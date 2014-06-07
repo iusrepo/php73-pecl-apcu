@@ -22,7 +22,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -263,6 +263,9 @@ fi
 
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Wed Apr 23 2014 Remi Collet <remi@fedoraproject.org> - 4.0.4-2
 - add numerical prefix to extension configuration file
 
