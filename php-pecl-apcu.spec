@@ -21,8 +21,8 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.4
-Release:        3%{?dist}
+Version:        4.0.6
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -59,7 +59,7 @@ Provides:       php-pecl-apc%{?_isa} = %{version}
 Provides:       php-pecl(APC) = %{version}
 Provides:       php-pecl(APC)%{?_isa} = %{version}
 
-%if 0%{?fedora} < 20
+%if 0%{?fedora} < 20 && 0%{?rhel} < 7
 # Filter shared private
 %{?filter_provides_in: %filter_provides_in %{_libdir}/.*\.so$}
 %{?filter_setup}
@@ -128,13 +128,15 @@ configuration, available on http://localhost/apcu-panel/
 %setup -qc
 mv %{pecl_name}-%{version} NTS
 
-# Fix file roles https://github.com/krakjoe/apcu/pull/69
-sed -e '/LICENSE/s/role="src"/role="doc"/' \
-    -e '/NOTICE/s/role="src"/role="doc"/' \
-    -e '/README.md/s/role="src"/role="doc"/' \
-    -e '/TECHNOTES.txt/s/role="src"/role="doc"/' \
-    -e '/TODO/s/role="src"/role="doc"/' \
-    -i package.xml
+cd NTS
+
+# Sanity check, really often broken
+extver=$(sed -n '/#define PHP_APCU_VERSION/{s/.* "//;s/".*$//;p}' php_apc.h)
+if test "x${extver}" != "x%{version}"; then
+   : Error: Upstream extension version is ${extver}, expecting %{version}.
+   exit 1
+fi
+cd ..
 
 %if %{with_zts}
 # duplicate for ZTS build
@@ -254,7 +256,6 @@ fi
 
 
 %files -n apcu-panel
-%defattr(-,root,root,-)
 # Need to restrict access, as it contains a clear password
 %attr(550,apache,root) %dir %{_sysconfdir}/apcu-panel
 %config(noreplace) %{_sysconfdir}/apcu-panel/conf.php
@@ -263,6 +264,9 @@ fi
 
 
 %changelog
+* Thu Jun 12 2014 Remi Collet <remi@fedoraproject.org> - 4.0.6-1
+- Update to 4.0.6 (beta)
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
