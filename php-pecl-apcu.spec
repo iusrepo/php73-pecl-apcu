@@ -13,7 +13,7 @@
 
 %global pecl_name apcu
 %global with_zts  0%{?__ztsphp:1}
-%if 0%{?fedora} < 21
+%if "%{php_version}" < "5.6"
 %global ini_name  %{pecl_name}.ini
 %else
 %global ini_name  40-%{pecl_name}.ini
@@ -22,7 +22,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -264,6 +264,9 @@ fi
 
 
 %changelog
+* Thu Jun 19 2014 Remi Collet <rcollet@redhat.com> - 4.0.6-2
+- rebuild for https://fedoraproject.org/wiki/Changes/Php56
+
 * Thu Jun 12 2014 Remi Collet <remi@fedoraproject.org> - 4.0.6-1
 - Update to 4.0.6 (beta)
 
