@@ -21,8 +21,8 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.6
-Release:        3%{?dist}
+Version:        4.0.7
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -239,8 +239,10 @@ fi
 %files
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
+
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
+
 %if %{with_zts}
 %{php_ztsextdir}/%{pecl_name}.so
 %config(noreplace) %{php_ztsinidir}/%{ini_name}
@@ -250,6 +252,7 @@ fi
 %files devel
 %doc %{pecl_testdir}/%{pecl_name}
 %{php_incldir}/ext/%{pecl_name}
+
 %if %{with_zts}
 %{php_ztsincldir}/ext/%{pecl_name}
 %endif
@@ -264,6 +267,9 @@ fi
 
 
 %changelog
+* Mon Oct 27 2014 Remi Collet <remi@fedoraproject.org> - 4.0.7-1
+- Update to 4.0.7
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.6-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
