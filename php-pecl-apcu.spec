@@ -1,8 +1,8 @@
-# spec file for php-pecl-apcu
+# Fedora spec file for php-pecl-apcu
 #
-# Copyright (c) 2013-2014 Remi Collet
+# Copyright (c) 2013-2015 Remi Collet
 # License: CC-BY-SA
-# http://creativecommons.org/licenses/by-sa/3.0/
+# http://creativecommons.org/licenses/by-sa/4.0/
 #
 # Please, preserve the changelog entries
 #
@@ -21,8 +21,8 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.7
-Release:        2%{?dist}
+Version:        4.0.8
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -267,6 +267,9 @@ fi
 
 
 %changelog
+* Fri Nov 20 2015 Remi Collet <remi@fedoraproject.org> - 4.0.8-1
+- Update to 4.0.8
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
