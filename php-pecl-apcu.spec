@@ -22,7 +22,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -36,8 +36,6 @@ BuildRequires:  php-devel
 BuildRequires:  php-pear
 BuildRequires:  pcre-devel
 
-Requires(post): %{__pecl}
-Requires(postun): %{__pecl}
 Requires:       php(zend-abi) = %{php_zend_api}
 Requires:       php(api) = %{php_core_api}
 
@@ -226,16 +224,6 @@ REPORT_EXIT_STATUS=1 \
 %endif
 
 
-%post
-%{pecl_install} %{pecl_xmldir}/%{name}.xml >/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    %{pecl_uninstall} %{pecl_name} >/dev/null || :
-fi
-
-
 %files
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
@@ -267,6 +255,9 @@ fi
 
 
 %changelog
+* Wed Feb 10 2016 Remi Collet <remi@fedoraproject.org> - 4.0.10-3
+- drop scriptlets (replaced file triggers in php-pear)
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 4.0.10-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
