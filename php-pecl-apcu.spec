@@ -22,11 +22,13 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        4.0.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
 Source3:        %{pecl_name}.conf.php
+
+Patch0:         %{pecl_name}-upstream.patch
 
 License:        PHP
 Group:          Development/Languages
@@ -127,6 +129,7 @@ configuration, available on http://localhost/apcu-panel/
 mv %{pecl_name}-%{version} NTS
 
 cd NTS
+%patch0 -p1
 
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_APCU_VERSION/{s/.* "//;s/".*$//;p}' php_apc.h)
@@ -255,6 +258,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Wed Apr 20 2016 Remi Collet <remi@fedoraproject.org> - 4.0.10-4
+- add upstream patch, fix FTBFS with 5.6.21RC1, thanks Koschei
+
 * Wed Feb 10 2016 Remi Collet <remi@fedoraproject.org> - 4.0.10-3
 - drop scriptlets (replaced file triggers in php-pear)
 

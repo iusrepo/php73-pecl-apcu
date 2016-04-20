@@ -1,0 +1,40 @@
+From c6812973fbc29d13368b2ad45a016f4839ee141e Mon Sep 17 00:00:00 2001
+From: Remi Collet <fedora@famillecollet.com>
+Date: Wed, 20 Apr 2016 09:18:38 +0200
+Subject: [PATCH] fix #176 segfault when apc.preload_path contains bad data
+
+---
+ apc_cache.c         | 2 +-
+ tests/data/abc.data | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/apc_cache.c b/apc_cache.c
+index af5b584..5118e77 100644
+--- a/apc_cache.c
++++ b/apc_cache.c
+@@ -391,7 +391,7 @@ static zval* data_unserialize(const char *filename TSRMLS_DC)
+         return NULL;
+     }
+ 
+-    MAKE_STD_ZVAL(retval);
++    ALLOC_INIT_ZVAL(retval);
+ 
+     PHP_VAR_UNSERIALIZE_INIT(var_hash);
+     
+
+From d9cbfab0bbcdf33a2b26a1c2382e882264835230 Mon Sep 17 00:00:00 2001
+From: Remi Collet <fedora@famillecollet.com>
+Date: Tue, 19 Apr 2016 17:35:31 +0200
+Subject: [PATCH] fix test/data
+
+---
+ tests/data/abc.data | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/data/abc.data b/tests/data/abc.data
+index 0e386ce..ecdc6cf 100644
+--- a/tests/data/abc.data
++++ b/tests/data/abc.data
+@@ -1 +1 @@
+-s:3:"123"
++s:3:"123";
