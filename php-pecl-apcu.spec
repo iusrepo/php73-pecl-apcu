@@ -1,34 +1,23 @@
 # Fedora spec file for php-pecl-apcu
 #
-# Copyright (c) 2013-2015 Remi Collet
+# Copyright (c) 2013-2016 Remi Collet
 # License: CC-BY-SA
 # http://creativecommons.org/licenses/by-sa/4.0/
 #
 # Please, preserve the changelog entries
 #
-%{!?php_inidir:  %global php_inidir  %{_sysconfdir}/php.d}
-%{!?php_incldir: %global php_incldir %{_includedir}/php}
-%{!?__pecl:      %global __pecl      %{_bindir}/pecl}
-%{!?__php:       %global __php       %{_bindir}/php}
-
 %global pecl_name apcu
 %global with_zts  0%{?__ztsphp:1}
-%if "%{php_version}" < "5.6"
-%global ini_name  %{pecl_name}.ini
-%else
 %global ini_name  40-%{pecl_name}.ini
-%endif
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.10
-Release:        4%{?dist}
+Version:        4.0.11
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
 Source3:        %{pecl_name}.conf.php
-
-Patch0:         %{pecl_name}-upstream.patch
 
 License:        PHP
 Group:          Development/Languages
@@ -46,11 +35,7 @@ Provides:       php-apcu = %{version}
 Provides:       php-apcu%{?_isa} = %{version}
 Provides:       php-pecl(apcu) = %{version}
 Provides:       php-pecl(apcu)%{?_isa} = %{version}
-%if 0%{?fedora} < 20 && 0%{?rhel} < 7
-Conflicts:      php-pecl-apc < 4
-%else
 Obsoletes:      php-pecl-apc < 4
-%endif
 # Same provides than APC, this is a drop in replacement
 Provides:       php-apc = %{version}
 Provides:       php-apc%{?_isa} = %{version}
@@ -58,12 +43,6 @@ Provides:       php-pecl-apc = %{version}
 Provides:       php-pecl-apc%{?_isa} = %{version}
 Provides:       php-pecl(APC) = %{version}
 Provides:       php-pecl(APC)%{?_isa} = %{version}
-
-%if 0%{?fedora} < 20 && 0%{?rhel} < 7
-# Filter shared private
-%{?filter_provides_in: %filter_provides_in %{_libdir}/.*\.so$}
-%{?filter_setup}
-%endif
 
 
 %description
@@ -92,11 +71,7 @@ Summary:       APCu developer files (header)
 Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      php-devel%{?_isa}
-%if 0%{?fedora} < 20 && 0%{?rhel} < 7
-Conflicts:     php-pecl-apc-devel < 4
-%else
 Obsoletes:     php-pecl-apc-devel < 4
-%endif
 Provides:      php-pecl-apc-devel = %{version}-%{release}
 Provides:      php-pecl-apc-devel%{?_isa} = %{version}-%{release}
 
@@ -112,11 +87,7 @@ Requires:      %{name} = %{version}-%{release}
 Requires:      mod_php
 Requires:      php-gd
 Requires:      httpd
-%if 0%{?fedora} < 20 && 0%{?rhel} < 7
-Conflicts:     apc-panel < 4
-%else
 Obsoletes:     apc-panel < 4
-%endif
 Provides:      apc-panel = %{version}-%{release}
 
 %description -n apcu-panel
@@ -128,8 +99,9 @@ configuration, available on http://localhost/apcu-panel/
 %setup -qc
 mv %{pecl_name}-%{version} NTS
 
+sed -e '/LICENSE/s/role="doc"/role="src"/' -i package.xml
+
 cd NTS
-%patch0 -p1
 
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_APCU_VERSION/{s/.* "//;s/".*$//;p}' php_apc.h)
@@ -228,6 +200,7 @@ REPORT_EXIT_STATUS=1 \
 
 
 %files
+%license NTS/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
 %{pecl_xmldir}/%{name}.xml
 
@@ -258,6 +231,10 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Wed Apr 20 2016 Remi Collet <remi@fedoraproject.org> - 4.0.11-1
+- Update to 4.0.11 (stable)
+- fix license usage and spec cleanup
+
 * Wed Apr 20 2016 Remi Collet <remi@fedoraproject.org> - 4.0.10-4
 - add upstream patch, fix FTBFS with 5.6.21RC1, thanks Koschei
 
