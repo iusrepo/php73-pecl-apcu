@@ -12,7 +12,7 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        4.0.11
+Version:        5.1.5
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
@@ -23,7 +23,7 @@ License:        PHP
 Group:          Development/Languages
 URL:            http://pecl.php.net/package/APCu
 
-BuildRequires:  php-devel
+BuildRequires:  php-devel > 7
 BuildRequires:  php-pear
 BuildRequires:  pcre-devel
 
@@ -35,35 +35,15 @@ Provides:       php-apcu = %{version}
 Provides:       php-apcu%{?_isa} = %{version}
 Provides:       php-pecl(apcu) = %{version}
 Provides:       php-pecl(apcu)%{?_isa} = %{version}
-Obsoletes:      php-pecl-apc < 4
-# Same provides than APC, this is a drop in replacement
-Provides:       php-apc = %{version}
-Provides:       php-apc%{?_isa} = %{version}
-Provides:       php-pecl-apc = %{version}
-Provides:       php-pecl-apc%{?_isa} = %{version}
-Provides:       php-pecl(APC) = %{version}
-Provides:       php-pecl(APC)%{?_isa} = %{version}
 
 
 %description
-APCu is userland caching: APC stripped of opcode caching in preparation
-for the deployment of Zend OPcache as the primary solution to opcode
-caching in future versions of PHP.
+APCu is userland caching: APC stripped of opcode caching.
 
-APCu has a revised and simplified codebase, by the time the PECL release
-is available, every part of APCu being used will have received review and
-where necessary or appropriate, changes.
+APCu only supports userland caching of variables.
 
-Simplifying and documenting the API of APCu completely removes the barrier
-to maintenance and development of APCu in the future, and additionally allows
-us to make optimizations not possible previously because of APC's inherent
-complexity.
-
-APCu only supports userland caching (and dumping) of variables, providing an
-upgrade path for the future. When O+ takes over, many will be tempted to use
-3rd party solutions to userland caching, possibly even distributed solutions;
-this would be a grave error. The tried and tested APC codebase provides far
-superior support for local storage of PHP variables.
+The %{?sub_prefix}php-pecl-apcu-bc package provides a drop
+in replacement for APC.
 
 
 %package devel
@@ -124,13 +104,17 @@ sed -e s:apc.conf.php:%{_sysconfdir}/apcu-panel/conf.php:g \
 %build
 cd NTS
 %{_bindir}/phpize
-%configure --with-php-config=%{_bindir}/php-config
+%configure \
+   --enable-apcu \
+   --with-php-config=%{_bindir}/php-config
 make %{?_smp_mflags}
 
 %if %{with_zts}
 cd ../ZTS
 %{_bindir}/zts-phpize
-%configure --with-php-config=%{_bindir}/zts-php-config
+%configure \
+   --enable-apcu \
+   --with-php-config=%{_bindir}/zts-php-config
 make %{?_smp_mflags}
 %endif
 
@@ -172,27 +156,26 @@ done
 
 %check
 cd NTS
-
-# Check than both extensions are reported (BC mode)
-%{_bindir}/php -n -d extension_dir=modules -d extension=apcu.so -m | grep 'apcu'
-%{_bindir}/php -n -d extension_dir=modules -d extension=apcu.so -m | grep 'apc$'
+%{_bindir}/php -n \
+   -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
+   -m | grep 'apcu'
 
 # Upstream test suite for NTS extension
 TEST_PHP_EXECUTABLE=%{_bindir}/php \
-TEST_PHP_ARGS="-n -d extension_dir=$PWD/modules -d extension=%{pecl_name}.so" \
+TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_extdir}/%{pecl_name}.so" \
 NO_INTERACTION=1 \
 REPORT_EXIT_STATUS=1 \
 %{_bindir}/php -n run-tests.php
 
 %if %{with_zts}
 cd ../ZTS
-
-%{__ztsphp}    -n -d extension_dir=modules -d extension=apcu.so -m | grep 'apcu'
-%{__ztsphp}    -n -d extension_dir=modules -d extension=apcu.so -m | grep 'apc$'
+%{__ztsphp} -n \
+   -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so \
+   -m | grep 'apcu'
 
 # Upstream test suite for ZTS extension
 TEST_PHP_EXECUTABLE=%{__ztsphp} \
-TEST_PHP_ARGS="-n -d extension_dir=$PWD/modules -d extension=%{pecl_name}.so" \
+TEST_PHP_ARGS="-n -d extension=%{buildroot}%{php_ztsextdir}/%{pecl_name}.so" \
 NO_INTERACTION=1 \
 REPORT_EXIT_STATUS=1 \
 %{__ztsphp} -n run-tests.php
@@ -231,6 +214,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Mon Jun 27 2016 Remi Collet <remi@fedoraproject.org> - 5.1.5-1
+- Update to 5.1.5 (php 7, stable)
+
 * Wed Apr 20 2016 Remi Collet <remi@fedoraproject.org> - 4.0.11-1
 - Update to 4.0.11 (stable)
 - fix license usage and spec cleanup
