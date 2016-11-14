@@ -13,7 +13,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        5.1.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -214,6 +214,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Mon Nov 14 2016 Remi Collet <remi@fedoraproject.org> - 5.1.7-2
+- rebuild for https://fedoraproject.org/wiki/Changes/php71
+
 * Fri Oct 21 2016 Remi Collet <remi@fedoraproject.org> - 5.1.7-1
 - Update to 5.1.7 (php 7, stable)
 
