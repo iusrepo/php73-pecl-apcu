@@ -6,6 +6,10 @@
 #
 # Please, preserve the changelog entries
 #
+
+# we don't want -z defs linker flag
+%undefine _strict_symbol_defs_build
+
 %global pecl_name apcu
 %global with_zts  0%{?__ztsphp:1}
 %global ini_name  40-%{pecl_name}.ini
@@ -13,7 +17,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        5.1.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -214,6 +218,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Fri Jan 26 2018 Remi Collet <remi@remirepo.net> - 5.1.9-2
+- undefine _strict_symbol_defs_build
+
 * Tue Jan  2 2018 Remi Collet <remi@fedoraproject.org> - 5.1.9-1
 - Update to 5.1.9 (php 7, stable)
 
