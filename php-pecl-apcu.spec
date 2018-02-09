@@ -17,7 +17,7 @@
 Name:           php-pecl-apcu
 Summary:        APC User Cache
 Version:        5.1.9
-Release:        2%{?dist}
+Release:        3%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -218,6 +218,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.9-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Fri Jan 26 2018 Remi Collet <remi@remirepo.net> - 5.1.9-2
 - undefine _strict_symbol_defs_build
 
