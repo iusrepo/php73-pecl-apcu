@@ -16,17 +16,17 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        5.1.9
-Release:        3%{?dist}
+Version:        5.1.10
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
 Source3:        %{pecl_name}.conf.php
 
 License:        PHP
-Group:          Development/Languages
 URL:            http://pecl.php.net/package/APCu
 
+BuildRequires:  gcc
 BuildRequires:  php-devel > 7
 BuildRequires:  php-pear
 BuildRequires:  pcre-devel
@@ -52,7 +52,6 @@ in replacement for APC.
 
 %package devel
 Summary:       APCu developer files (header)
-Group:         Development/Libraries
 Requires:      %{name}%{?_isa} = %{version}-%{release}
 Requires:      php-devel%{?_isa}
 Obsoletes:     php-pecl-apc-devel < 4
@@ -65,7 +64,6 @@ These are the files needed to compile programs using APCu.
 
 %package -n apcu-panel
 Summary:       APCu control panel
-Group:         Applications/Internet
 BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
 Requires:      mod_php
@@ -218,6 +216,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Fri Feb 16 2018 Remi Collet <remi@remirepo.net> - 5.1.10-1
+- update to 5.1.10 (stable)
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.1.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
