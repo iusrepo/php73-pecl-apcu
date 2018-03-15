@@ -66,7 +66,7 @@ These are the files needed to compile programs using APCu.
 Summary:       APCu control panel
 BuildArch:     noarch
 Requires:      %{name} = %{version}-%{release}
-Requires:      mod_php
+Requires:      php(httpd)
 Requires:      php-gd
 Requires:      httpd
 Obsoletes:     apc-panel < 4
