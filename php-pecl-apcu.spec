@@ -16,7 +16,7 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        5.1.11
+Version:        5.1.12
 Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
@@ -216,6 +216,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Mon Jul  9 2018 Remi Collet <remi@remirepo.net> - 5.1.12-1
+- update to 5.1.12 (stable)
+
 * Thu Mar  8 2018 Remi Collet <remi@remirepo.net> - 5.1.11-1
 - update to 5.1.11 (stable)
 
