@@ -16,8 +16,8 @@
 
 Name:           php-pecl-apcu
 Summary:        APC User Cache
-Version:        5.1.12
-Release:        3%{?dist}
+Version:        5.1.13
+Release:        1%{?dist}
 Source0:        http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -216,6 +216,9 @@ REPORT_EXIT_STATUS=1 \
 
 
 %changelog
+* Mon Nov 19 2018 Remi Collet <remi@remirepo.net> - 5.1.13-1
+- update to 5.1.13 (stable)
+
 * Thu Oct 11 2018 Remi Collet <remi@remirepo.net> - 5.1.12-3
 - Rebuild for https://fedoraproject.org/wiki/Changes/php73
 
