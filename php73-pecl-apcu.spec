@@ -145,6 +145,8 @@ install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{pecl_name}.xml
 # Pages
 install -D -m 644 -p NTS/apc.php  \
         %{buildroot}%{_datadir}/apcu-panel/index.php
+# Add apc.php to documentation for use with non-Apache webservers
+install -D -m 644 -p NTS/apc.php %{buildroot}%{pecl_docdir}/%{pecl_name}/apc.php
 # Apache config
 install -D -m 644 -p %{SOURCE2} \
         %{buildroot}%{_sysconfdir}/httpd/conf.d/apcu-panel.conf
@@ -242,6 +244,7 @@ fi
 * Wed May  1 2019 Matt Linscott <matt.linscott@gmail.com> - 5.1.17-2
 - Port from Fedora to IUS
 - Install package.xml as %%{pecl_name}.xml, not %%{name}.xml
+- Include apc.php in %%{pecl_docdir} of main package
 
 * Fri Feb  8 2019 Remi Collet <remi@remirepo.net> - 5.1.17-1
 - update to 5.1.17
