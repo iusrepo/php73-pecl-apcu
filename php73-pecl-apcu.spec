@@ -139,7 +139,7 @@ install -D -m 644 %{SOURCE1} %{buildroot}%{php_ztsinidir}/%{ini_name}
 %endif
 
 # Install the package XML file
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
+install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{pecl_name}.xml
 
 # Install the Control Panel
 # Pages
@@ -210,7 +210,7 @@ fi
 %files
 %license NTS/LICENSE
 %doc %{pecl_docdir}/%{pecl_name}
-%{pecl_xmldir}/%{name}.xml
+%{pecl_xmldir}/%{pecl_name}.xml
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
@@ -241,6 +241,7 @@ fi
 %changelog
 * Wed May  1 2019 Matt Linscott <matt.linscott@gmail.com> - 5.1.17-2
 - Port from Fedora to IUS
+- Install package.xml as %%{pecl_name}.xml, not %%{name}.xml
 
 * Fri Feb  8 2019 Remi Collet <remi@remirepo.net> - 5.1.17-1
 - update to 5.1.17
