@@ -30,8 +30,9 @@ License:        PHP
 URL:            https://pecl.php.net/package/APCu
 
 BuildRequires:  gcc
+# build require pear1's dependencies to avoid mismatched php stacks
+BuildRequires:  pear1 %{php}-cli %{php}-common %{php}-xml
 BuildRequires:  %{php}-devel
-BuildRequires:  pear1
 BuildRequires:  pcre-devel
 
 Requires:       php(zend-abi) = %{php_zend_api}
