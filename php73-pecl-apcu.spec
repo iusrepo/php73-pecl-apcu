@@ -19,8 +19,8 @@
 
 Name:           %{php}-pecl-%{pecl_name}
 Summary:        APC User Cache
-Version:        5.1.17
-Release:        3%{?dist}
+Version:        5.1.18
+Release:        1%{?dist}
 Source0:        https://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:        %{pecl_name}.ini
 Source2:        %{pecl_name}-panel.conf
@@ -242,6 +242,9 @@ fi
 
 
 %changelog
+* Mon Oct 28 2019 judd obannon <judd.obannon@rackspace.com> - 5.1.18-1
+- Latest upstream
+
 * Sun May 05 2019 Carl George <carl@george.computer> - 5.1.17-3
 - Update %%triggerin for pear1 rename
 
